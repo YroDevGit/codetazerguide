@@ -70,27 +70,22 @@
       font-style: italic;
     }
 
-    /* PHP/JS Keywords */
     .keyword {
       color: #f92672;
     }
 
-    /* Strings */
     .string {
       color: #e6db74;
     }
 
-    /* Functions/Methods */
     .function {
       color: #a6e22e;
     }
 
-    /* Variables */
     .variable {
       color: #fd971f;
     }
 
-    /* HTML Specific */
     .tag {
       color: #f92672;
     }
@@ -103,7 +98,6 @@
       color: #e6db74;
     }
 
-    /* CSS Specific */
     .selector {
       color: #a6e22e;
     }
@@ -162,33 +156,33 @@
     <h2>⚙ Backend Code (PHP)</h2>
     <pre><code><span class="comment">&lt;?php // route: user/add</span>
 
-<span class="keyword">use</span> Classes\Request;
-<span class="keyword">use</span> Classes\Response;
-<span class="keyword">use</span> Tables\User;
+<span class="keyword">use</span> Classes\Request; <span class="comment">// Handle HTTP request input</span>
+<span class="keyword">use</span> Classes\Response; <span class="comment">// Build and send API responses</span>
+<span class="keyword">use</span> Tables\User; <span class="comment">// Model for interacting with "User" table</span>
 
-$username = Request::post(<span class="string">"username"</span>);
-$password = Request::post(<span class="string">"password"</span>);
-$fullname = Request::post(<span class="string">"fullname"</span>);
+$username = Request::post(<span class="string">"username"</span>); <span class="comment">// Get "username" from form</span>
+$password = Request::post(<span class="string">"password"</span>); <span class="comment">// Get "password" from form</span>
+$fullname = Request::post(<span class="string">"fullname"</span>); <span class="comment">// Get "fullname" from form</span>
 
 <span class="keyword">if</span> (! $username) {
-    Response::code(404)-&gt;message(<span class="string">"Username is required"</span>)-&gt;send();
+    Response::code(404)-&gt;message(<span class="string">"Username is required"</span>)-&gt;send(); <span class="comment">// Validate username</span>
 }
 
 <span class="keyword">if</span> (! $password) {
-    Response::code(404)-&gt;message(<span class="string">"Password is required"</span>)-&gt;send();
+    Response::code(404)-&gt;message(<span class="string">"Password is required"</span>)-&gt;send(); <span class="comment">// Validate password</span>
 }
 
 <span class="keyword">if</span> (! $fullname) {
-    Response::code(404)-&gt;message(<span class="string">"Fullname is required"</span>)-&gt;send();
+    Response::code(404)-&gt;message(<span class="string">"Fullname is required"</span>)-&gt;send(); <span class="comment">// Validate fullname</span>
 }
 
-$result = User::insert([
+$result = User::insert([ <span class="comment">// Insert new user row into DB</span>
     <span class="string">"username"</span> =&gt; $username,
     <span class="string">"password"</span> =&gt; $password,
     <span class="string">"fullname"</span> =&gt; $fullname,
 ]);
 
-Response::code(200)-&gt;message(<span class="string">"User added"</span>)-&gt;send();</code></pre>
+Response::code(200)-&gt;message(<span class="string">"User added"</span>)-&gt;send(); <span class="comment">// Return success response</span></code></pre>
   </div>
 
   <div class="section">
@@ -211,16 +205,16 @@ Response::code(200)-&gt;message(<span class="string">"User added"</span>)-&gt;se
 &lt;?= import_packages(<span class="string">"tyrux"</span>, <span class="string">"twal"</span>, <span class="string">"ctr"</span>) ?&gt;
 
 <span class="tag">&lt;script&gt;</span>
-  addEventListener(<span class="string">"DOMContentLoaded"</span>, () =&gt; {
-    CTR.submit(<span class="string">"#adduser"</span>, (data) =&gt; {
-      tyrax.post({
-        url: <span class="string">"user/add"</span>,
-        request: data,
-        response: (send) =&gt; {
-          <span class="keyword">if</span> (send.code == 200) {
-            twal.ok(send.message).then(() =&gt; location.reload());
-          } <span class="keyword">else</span> {
-            twal.err(send.message);
+  addEventListener(<span class="string">"DOMContentLoaded"</span>, () =&gt; { <span class="comment">// Run when page is fully loaded</span>
+    CTR.submit(<span class="string">"#adduser"</span>, (data) =&gt; { <span class="comment">// Attach submit handler to #adduser form</span>
+      tyrax.post({ <span class="comment">// Send POST request with Tyrux</span>
+        url: <span class="string">"user/add"</span>, <span class="comment">// Target backend route</span>
+        request: data, <span class="comment">// Send form data automatically</span>
+        response: (send) =&gt; { <span class="comment">// Handle backend response</span>
+          <span class="keyword">if</span> (send.code == 200) { <span class="comment">// If success</span>
+            twal.ok(send.message).then(() =&gt; location.reload()); <span class="comment">// Show success popup then reload</span>
+          } <span class="keyword">else</span> { <span class="comment">// If error</span>
+            twal.err(send.message); <span class="comment">// Show error popup</span>
           }
         }
       })
